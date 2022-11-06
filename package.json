@@ -1,0 +1,12 @@
+{
+  "name": "apple-reserve-monitor",
+  "version": "1.0.0",
+  "description": "Find stock for apple products",
+  "main": "store_checker.js",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "node-fetch": "^3.2.10"
+  }
+}
