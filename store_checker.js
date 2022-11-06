@@ -13,9 +13,9 @@ class Configuration {
         this.country_code = config.country_code;
         this.device_family = config.device_family;
         this.zip_code = config.zip_code | [];
-        this.selected_device_models = config.models | [];
-        this.selected_carriers = config.carriers | [];
-        this.selected_stores = config.stores | [];
+        this.selected_device_models = config.models || [];
+        this.selected_carriers = config.carriers || [];
+        this.selected_stores = config.stores || [];
         this.appointment_stores = config.appointment_stores;
     }
 }
@@ -32,14 +32,47 @@ class StoreChecker {
 
     async refresh() {
         const device_list = await this.find_devices();
+
+        if(device_list) {
+            console.log("✔ Found".green, `${device_list.length}`.cyan, "devices matching your config.".green)
+        } else {
+            console.log("❌ No devices found matching your config.".red);
+            process.exit(0);
+        }
+
+        console.log("➜ Downloading Stock Information for the devices...".blue);
     }
 
     async find_devices() {
         const device_list = [];
 
-        console.log("➜  Downloading Models List...".blue);
+        console.log("➜ Downloading Models List...".blue);
 
-        const product_locator_response = await fetch(this.PRODUCT_LOCATOR_URL);
+        try {
+
+            const product_locator_response = await fetch(this.PRODUCT_LOCATOR_URL).then(response => response.json());
+
+            const product_list = product_locator_response.body.productLocatorOverlayData.productLocatorMeta.products;
+
+            product_list.forEach(product => {
+                if (this.configuration.selected_device_models.length === 0 || this.configuration.selected_device_models.includes(product.model)) {
+                    if (this.configuration.selected_carriers.length === 0 || this.configuration.selected_carriers.includes(product.carrier)) {
+                        device_list.push({
+                            "title": product.productTitle,
+                            "model": product.model,
+                            "carrier": product.carrier
+                        });
+                    }
+                }
+            });
+        } catch (e) {
+            console.log("❌ Unable to download models list.".red);
+            console.warn(e);
+            process.exit(0);
+        }
+
+        return device_list;
+
     }
 
 }
