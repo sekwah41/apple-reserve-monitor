@@ -1,12 +1,13 @@
 {
   "name": "apple-reserve-monitor",
   "version": "1.0.0",
-  "description": "Find stock for apple products",
+  "description": "a",
   "main": "store_checker.js",
   "license": "MIT",
   "type": "module",
   "dependencies": {
     "colors": "^1.4.0",
+    "discord-webhook-node": "^1.1.8",
     "node-fetch": "^3.2.10",
     "progress": "^2.0.3",
     "spq": "^2.0.0"

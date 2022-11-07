@@ -1,10 +1,8 @@
 {
-  "country_code": "de",
   "device_family": "iphone_12_mini",
-  "zip_code": "10369",
   "models": ["MGJ53ZD/A"],
+  "webhook": "https://example.com/webhook",
+  "message": "Someone to ping or what to prefix the message with when stuff is found",
   "product": ["iPhone 14 Pro Max 512GB"],
-  "carriers": ["TMOBILE/US", "SPRINT/US", "ATT/US"],
-  "stores": ["R462"],
-  "appointment_stores": ["R358", "R462"]
+  "stores": ["R462"]
 }

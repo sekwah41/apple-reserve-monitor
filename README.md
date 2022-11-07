@@ -1,6 +1,10 @@
 
 Based on https://github.com/insanoid/Apple-Store-Reserve-Monitor
 
+This has been modified to find devices available for the upgrade program and uses the simpler endpoints to do so.
+
+It specifically works for the UK atm but if you need it for another country, you can change the URL's used.
+
 Though I rewrote it as it was having issues parsing some of the json or couldnt handle the 503 errors apple would sometimes return.
 
 Parts of the script also seemed broken at the time of writing this. Possibly due to an API update on apples behalf on the data they return.
