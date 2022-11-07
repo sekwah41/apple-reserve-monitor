@@ -53,7 +53,7 @@ class StoreChecker {
         let promises = [];
         for (const device of device_list) {
             promises.push(QueuedTask(async (resolve) => {
-                await this.check_stores_for_device(device)
+                await this.check_stores_for_device(device);
                 bar.tick();
                 resolve();
             }));
@@ -67,8 +67,22 @@ class StoreChecker {
 
         let stock_available = false;
 
+        function findDeviceFromPartNumber(model) {
+            return device_list.find(device => device.model === model);
+        }
+
         for (const store of stores) {
             console.log(`\n\n${store.storeName.green}, ${store.city.green}, (${store.storeId.green})`);
+            //console.log(store);
+            console.log(Object.values(store.parts).map(part => {
+                return `${findDeviceFromPartNumber(part.partNumber).title}: ${part.pickupSearchQuote}, (${part.pickupDisplay})`;
+            }).join(',\n'));
+            for(let partId in store.parts) {
+                let part = store.parts[partId];
+                // if(part.pickupDisplay !== "unavailable") {
+                //     console.log(part);
+                // }
+            }
         }
     }
 
@@ -81,7 +95,7 @@ class StoreChecker {
     async check_stores_for_device(device) {
         //console.log(device);
         const url = this.PRODUCT_AVAILABILITY_URL(device.model);
-        //console.log("\n" + url);
+        console.log("\n" + url);
         let availability;
 
         let attempts = 10;
@@ -118,10 +132,9 @@ class StoreChecker {
                     "parts": {},
                 }
             }
-            let new_parts = store.partsAvailability
-            let old_parts = current_store.parts;
-            old_parts = new_parts;
-            current_store["parts"] = old_parts;
+            for(let partId in store.partsAvailability) {
+                current_store.parts[partId] = store.partsAvailability[partId];
+            }
             //If the store is in the list of user's preferred list, add it to the
             // list to check for stock.
             if (
@@ -160,7 +173,7 @@ class StoreChecker {
                 }
             });
 
-            console.log("Looking for stock for the following models: ".blue, `\n${device_list.map(device => device.title).join(',\n')}`.cyan);
+            console.log("Looking for stock for the following models: ".blue, `\n${device_list.map(device => device.title + ` (${device.model})`).join(',\n')}`.cyan);
         } catch (e) {
             console.log("❌ Unable to download models list.".red);
             console.warn(e);

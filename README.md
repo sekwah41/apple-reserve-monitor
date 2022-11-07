@@ -1,7 +1,9 @@
 
 Based on https://github.com/insanoid/Apple-Store-Reserve-Monitor
 
-Though I rewrote it as it was having issues parsing some of the json.
+Though I rewrote it as it was having issues parsing some of the json or couldnt handle the 503 errors apple would sometimes return.
+
+Parts of the script also seemed broken at the time of writing this. Possibly due to an API update on apples behalf on the data they return.
 
 There are also some edits to the config to make it easier to find the devices e.g. you can search by product title and itll partially match it.
 
